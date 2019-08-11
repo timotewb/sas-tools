@@ -32,7 +32,7 @@
 	*--- output to daily logfile;
 	%let logfile=&logdir.egScheduler_&logdate..log;
 	%put &=logfile.;
-	filename logf "&logfile";
+	filename logf "&logfile.";
 	proc printto log=logf;
 	run;
 
