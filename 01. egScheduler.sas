@@ -5,6 +5,7 @@
 * &rundays: max days scheduler will run continuously;
 * &notificationdays: send notification when shceudler reaches this number of rundays;
 * &logdir: directory where log fiels are to be saved;
+* &job_name: full path to code including name + extension;
 
 %let today=%sysfunc(today()); 
 %let rundays=30;              
