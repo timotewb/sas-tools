@@ -1,23 +1,23 @@
 %macro egScheduler;
 
 %let today=%sysfunc(today());
-%put &today;
+%put &=today;
 %let rundays=30;
 %do i=1 %to &rundays;
 
 	data null;
-		logdate=put(&today, date9.);
+		logdate=put(&today., date9.);
 		call symput('logdate', logdate);
 	run;
 
-	%if %eval(&i >= 27) %then %do;
-		%let daysleft=%eval(&rundays-&i);
+	%if %eval(&i. >= 27) %then %do;
+		%let daysleft=%eval(&rundays.-&i.);
 		*--- code to send email notification;
     
 	%end;
 
-	%let logfile=/dir01/dir02/scheduleT2&logdate..log;
-	%put &logfile;
+	%let logfile=/dir01/dir02/egScheduler_&logdate..log;
+	%put &=logfile.;
 
 	filename logf "&logfile";
 	proc printto log=logf;
@@ -67,7 +67,7 @@
 	run;
 
 	%let today=%eval(&today+1);
-	%put &today;
+	%put &=today.;
 %end;
 
 %mend egScheduler;
