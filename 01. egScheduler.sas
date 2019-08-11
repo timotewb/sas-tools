@@ -1,9 +1,21 @@
 %macro egScheduler;
 
-%let today=%sysfunc(today()); *date when the scheduler was kicked off;
+*--- SAS Enterprise Guide Scheduler;
+* &today: date when the scheduler was kicked off;
+* &rundays: max days scheduler will run continuously;
+* &notificationdays: send notification when shceudler reaches this number of rundays;
+* &logdir: directory where log fiels are to be saved;
+
+%let today=%sysfunc(today()); 
+%let rundays=30;              
+%let notificationdays = 27;   
+%let logdir = /dir01/dir02/;  
+
 %put &=today;
-%let rundays=30;              *max days scheduler will run continuously;
-%let notificationdays = 27;   *send notification when shceudler reaches this number of rundays;
+%put &=rundays;
+%put &=notificationdays;
+%put &=logdir;
+
 %do i=1 %to &rundays;
 
 	data null;
@@ -18,7 +30,7 @@
 	%end;
 
 	*--- output to daily logfile;
-	%let logfile=/dir01/dir02/egScheduler_&logdate..log;
+	%let logfile=&logdir.egScheduler_&logdate..log;
 	%put &=logfile.;
 	filename logf "&logfile";
 	proc printto log=logf;
@@ -75,4 +87,5 @@
 
 %mend egScheduler;
 
+*--- run the macro definition;
 %egScheduler;
