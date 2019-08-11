@@ -1,8 +1,9 @@
 %macro egScheduler;
 
-%let today=%sysfunc(today());
+%let today=%sysfunc(today()); *date when the scheduler was kicked off;
 %put &=today;
-%let rundays=30;
+%let rundays=30;              *max days scheduler will run continuously;
+%let notificationdays = 27;   *send notification when shceudler reaches this number of rundays;
 %do i=1 %to &rundays;
 
 	data null;
@@ -10,15 +11,15 @@
 		call symput('logdate', logdate);
 	run;
 
-	%if %eval(&i. >= 27) %then %do;
+	%if %eval(&i. >= &notificationdays.) %then %do;
 		%let daysleft=%eval(&rundays.-&i.);
-		*--- code to send email notification;
+		*--- code to send notification that the scheduler is nearing the rundays value;
     
 	%end;
 
+	*--- output to daily logfile;
 	%let logfile=/dir01/dir02/egScheduler_&logdate..log;
 	%put &=logfile.;
-
 	filename logf "&logfile";
 	proc printto log=logf;
 	run;
@@ -63,9 +64,11 @@
 
 	run;
 
+	*--- switch back to EG log;
 	proc printto;
 	run;
 
+	*--- output t EG log the date so you can check where the scheduler is upto from EG;
 	%let today=%eval(&today+1);
 	%put &=today.;
 %end;
