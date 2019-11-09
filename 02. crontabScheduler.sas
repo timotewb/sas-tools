@@ -14,7 +14,7 @@ To Do:
 
 /* required to keep sript running after error in include job*/
 options NOSYNTAXCHECK ;
-options emailhost = mail.catalinamarketing.com;
+options emailhost = mail.emailserver.com;
 
 *----------------------------------------------------------------------------------------;
 * define macro variables
